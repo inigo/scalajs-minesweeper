@@ -21,7 +21,18 @@ case class BoardState(dimensions: BoardDimensions, mines: List[Position], reveal
       else Playing
   }
 
-  private def calculateNeighbours(pos: Position) = 0
+  private[minesweeper] def calculateNeighbours(pos: Position): Int = {
+    val neighbours = neighbouringPositions(pos)
+    neighbours.count(p => mines.contains(p))
+  }
+
+  private[minesweeper] def neighbouringPositions(pos: Position): Seq[Position] = {
+    for (x <- pos.x - 1 to pos.x + 1;
+         y <- pos.y-1 to pos.y+1
+         if !(x==pos.x && y==pos.y)
+         if x >= 0 && y >= 0 && x <= dimensions.x && y <= dimensions.y
+        ) yield Position(x, y)
+  }
 
   def revealTile(pos: Position): BoardState = this.copy(revealedTiles = pos :: revealedTiles )
   def flagTile(pos: Position): BoardState = this.copy(flaggedTiles = pos :: flaggedTiles )
