@@ -4,10 +4,11 @@ import utest._
 import utest.framework.{Test, Tree}
 
 object BoardStateTest extends TestSuite {
-  private val boardState = BoardState(BoardDimensions(1, 1), mines = List(Position(0,1), Position(1,0)), revealedTiles = List(), flaggedTiles = List())
-  private val largerBoardState = BoardState(BoardDimensions(8, 8), mines = List(Position(0,1), Position(1,0)), revealedTiles = List(), flaggedTiles = List())
 
   override def tests: Tree[Test] = TestSuite {
+    // 2X
+    // X2
+    val boardState = BoardState(BoardDimensions(1, 1), mines = List(Position(0,1), Position(1,0)), revealedTiles = List(), flaggedTiles = List())
     "Checking for game end"- {
       "Initial game state is playing" - {
         assert(boardState.checkGameEnd() == Playing)
@@ -37,6 +38,7 @@ object BoardStateTest extends TestSuite {
     }
 
     "Calculating neighbours"- {
+      val largerBoardState = BoardState(BoardDimensions(8, 8), mines = List(Position(0,1), Position(1,0)), revealedTiles = List(), flaggedTiles = List())
       "identifies 3 neighbours in a corner"- {
         assert(largerBoardState.neighbouringPositions(Position(0,0)).size == 3)
         assert(largerBoardState.neighbouringPositions(Position(8,8)).size == 3)
@@ -60,6 +62,24 @@ object BoardStateTest extends TestSuite {
       "finds 1 mine when there is one nearby"- {
         assert(largerBoardState.calculateNeighbours(Position(2,0)) == 1)
         assert(largerBoardState.calculateNeighbours(Position(0,2)) == 1)
+      }
+    }
+
+    "Revealing neighbours"- {
+      // 2X10
+      // X121
+      // 112X
+      // 002X
+      val mediumBoardState = BoardState(BoardDimensions(3, 3), mines = List(Position(0,1), Position(1,0), Position(3, 2), Position(3,3)), revealedTiles = List(), flaggedTiles = List())
+      "reveals nothing additional when there is a mine next to the clicked on square"- {
+        assert(mediumBoardState.calculateTilesToReveal(Position(0,0)) == List(Position(0,0)))
+        assert(mediumBoardState.calculateTilesToReveal(Position(2,0)) == List(Position(2,0)))
+      }
+      "reveals empty spaces and their neighbours when starting with an empty space next to empty spaces"- {
+        assert(mediumBoardState.calculateTilesToReveal(Position(0,3)).toSet == Set(Position(0,3), Position(1,3), Position(0,2), Position(1,2), Position(2,2), Position(2,3)))
+      }
+      "reveals neighbours when starting with an empty space"- {
+        assert(mediumBoardState.calculateTilesToReveal(Position(3,0)).toSet == Set(Position(3,0), Position(3,1), Position(2,0), Position(2,1)))
       }
     }
 

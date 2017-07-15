@@ -1,5 +1,8 @@
 package net.surguy.minesweeper
 
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
+
 /**
   * Immutable representation of the current Minesweeper board - a new BoardState is created by revealing or flagging a tile.
   */
@@ -34,6 +37,25 @@ case class BoardState(dimensions: BoardDimensions, mines: List[Position], reveal
         ) yield Position(x, y)
   }
 
-  def revealTile(pos: Position): BoardState = this.copy(revealedTiles = pos :: revealedTiles )
+  private[minesweeper] def calculateTilesToReveal(pos: Position): List[Position] = {
+    val tilesToProcess = mutable.Queue[Position](pos)
+    val tilesProcessed = mutable.Queue[Position]()
+    val tilesToReveal = ListBuffer[Position]()
+    while(tilesToProcess.nonEmpty) {
+      val nextTile = tilesToProcess.dequeue()
+      if (!revealedTiles.contains(nextTile) && !tilesProcessed.contains(nextTile)) {
+        if (calculateNeighbours(nextTile)==0) neighbouringPositions(nextTile).foreach(p => tilesToProcess.enqueue(p))
+        tilesToReveal += nextTile
+      }
+      tilesProcessed.enqueue(nextTile)
+    }
+    tilesToReveal.toList
+  }
+
+  def revealTile(pos: Position): BoardState = {
+    val tilesToReveal = calculateTilesToReveal(pos)
+    this.copy(revealedTiles = tilesToReveal ::: revealedTiles )
+  }
+
   def flagTile(pos: Position): BoardState = this.copy(flaggedTiles = pos :: flaggedTiles )
 }
