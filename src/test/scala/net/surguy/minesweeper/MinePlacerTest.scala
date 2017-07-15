@@ -22,6 +22,9 @@ object MinePlacerTest extends TestSuite {
       val mines = minePlacer.randomMines(10)
       assert(mines.distinct.size == mines.size)
     }
+    "Creating mines gives the correct number of mines"-{
+      assert(minePlacer.randomMines(10).size == 10)
+    }
     "Spaces on board matches expected size"-{
       assert( BoardDimensions(3, 3).totalSpaces == 16)
       assert( BoardDimensions(4, 2).totalSpaces == 15)
