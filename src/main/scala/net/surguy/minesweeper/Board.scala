@@ -5,12 +5,9 @@ import org.scalajs.dom.CanvasRenderingContext2D
 /**
   * Displays the current state of the board and reacts to clicks.
   */
-class Board(dimensions: BoardDimensions, mineCount: Int, debug: Boolean = false) {
+class Board(dimensions: BoardDimensions, mineCount: Int, tileWidth: Int, tileHeight: Int, debug: Boolean = false) {
   private val mines = new MinePlacer(dimensions).randomMines(mineCount)
   private var state = BoardState(dimensions, mines, List(), List())
-
-  private val tileWidth = 30
-  private val tileHeight = 30
 
   def render(implicit context: CanvasRenderingContext2D): Unit = {
     val boardText = new StringBuffer()
