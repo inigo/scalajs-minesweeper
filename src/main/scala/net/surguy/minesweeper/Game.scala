@@ -10,7 +10,7 @@ import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
   */
 @JSExportTopLevel("minesweeper")
 object Game {
-  val board = new Board(BoardDimensions(9,9), mineCount = 10)
+  val board = new Board(BoardDimensions(8,8), mineCount = 10)
 
   @JSExport
   def play(canvas: Canvas): Unit = {
@@ -34,11 +34,11 @@ case object Won extends GameState
 case object Lost extends GameState
 case object Playing extends GameState
 
-sealed abstract class TileState
-case class RevealedClear(neighbours: Int) extends TileState
-case object RevealedMine extends TileState
-case object Flagged extends TileState
-case object Unknown extends TileState
+sealed abstract class TileState(val char: String)
+case class RevealedClear(neighbours: Int) extends TileState(""+neighbours)
+case object RevealedMine extends TileState("X")
+case object Flagged extends TileState("F")
+case object Unknown extends TileState("_")
 
 case class Position(x: Int, y: Int)
 

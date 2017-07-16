@@ -5,7 +5,7 @@ import org.scalajs.dom.CanvasRenderingContext2D
 /**
   * Displays the current state of the board and reacts to clicks.
   */
-class Board(dimensions: BoardDimensions, mineCount: Int) {
+class Board(dimensions: BoardDimensions, mineCount: Int, debug: Boolean = false) {
   private val mines = new MinePlacer(dimensions).randomMines(mineCount)
   private var state = BoardState(dimensions, mines, List(), List())
 
@@ -13,9 +13,18 @@ class Board(dimensions: BoardDimensions, mineCount: Int) {
   private val tileHeight = 30
 
   def render(implicit context: CanvasRenderingContext2D): Unit = {
-    for (x <- 0 to dimensions.x; y <- 0 to dimensions.y) {
+    val boardText = new StringBuffer()
+    for (y <- 0 to dimensions.y; x <- 0 to dimensions.x) {
       val pos = Position(x, y)
+      if (pos.x==0) boardText.append(pos.y+" : ")
+      boardText.append(state.at(pos).char+" ")
+      if (pos.x==dimensions.x) boardText.append("\n")
       drawTile(pos, state.at(pos))
+    }
+    if (debug) {
+      println("----")
+      println(boardText)
+      println("----")
     }
   }
 
@@ -42,14 +51,14 @@ class Board(dimensions: BoardDimensions, mineCount: Int) {
       case RevealedClear(neighbours) =>
         drawRect(backgroundColor)
         fillStyle = "#990000"
-        drawText(""+neighbours)
+        drawText(""+neighbours) // ①②③④⑤⑥⑦⑧⑨  ☺😀😃😎  😞
       case RevealedMine =>
         drawRect(backgroundColor)
         fillStyle = "#990000"
-        drawText("X")
+        drawText("X") // 💣
       case Flagged =>
         drawRect(backgroundColor)
-        drawText("F")
+        drawText("F") // ⚑ ⚐
     }
   }
 
