@@ -1,14 +1,42 @@
 scalajs-minesweeper is an implementation of Minesweeper in Scala JS.
 
-## How to run
+## How to run locally
 
-> bin/sbt
->
-> `> ~fastOptJS`
+    bin/sbt
+    > ~fastOptJS`
 
-Navigate to http://localhost:12345/target/scala-2.12/classes/index-dev.html
+Navigate to: http://localhost:12345/target/scala-2.12/classes/index-dev.html
+
+The page will refresh on every change to the code.
 
 Use `sbt fullOptJS` and open `index-opt.html` for the optimized version.
+
+## Live version
+
+https://s3.eu-west-2.amazonaws.com/scalajs-minesweeper/resources/index-opt.html
+
+To upload a new version:
+
+    bin/sbt 
+    > fullOptJs
+    > s3-upload
+
+(this depends on having appropriate S3 credentials)
+
+The S3 bucket is set up with a public read policy:
+
+    {
+      "Version":"2012-10-17",
+      "Statement":[{
+        "Sid":"PublicReadGetObject",
+            "Effect":"Allow",
+          "Principal": "*",
+          "Action":["s3:GetObject"],
+          "Resource":["arn:aws:s3:::scalajs-minesweeper/*"
+          ]
+        }
+      ]
+    }
 
 ## License
 
