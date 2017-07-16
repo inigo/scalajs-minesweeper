@@ -37,6 +37,15 @@ object BoardStateTest extends TestSuite {
       }
     }
 
+    "Flagging tiles"- {
+      "Adds a flag to a tile"- {
+        assert(boardState.toggleFlag(Position(0,0)).at(Position(0,0)) == Flagged )
+      }
+      "Removes a flag from an already flagged tile"- {
+        assert(boardState.toggleFlag(Position(0,0)).toggleFlag(Position(0,0)).at(Position(0,0)) == Unknown )
+      }
+    }
+
     "Calculating neighbours"- {
       val largerBoardState = BoardState(BoardDimensions(8, 8), mines = List(Position(0,1), Position(1,0)), revealedTiles = List(), flaggedTiles = List())
       "identifies 3 neighbours in a corner"- {

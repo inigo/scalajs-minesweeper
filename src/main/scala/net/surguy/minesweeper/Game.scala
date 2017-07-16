@@ -16,7 +16,11 @@ object Game {
   def play(canvas: Canvas): Unit = {
     val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
     board.render(ctx)
-
+    canvas.oncontextmenu = { e =>
+      board.rightClickPixel(e.clientX, e.clientY)
+      board.render(ctx)
+      false
+    }
     canvas.onclick = { e =>
       val gameState = board.clickPixel(e.clientX, e.clientY)
       board.render(ctx)

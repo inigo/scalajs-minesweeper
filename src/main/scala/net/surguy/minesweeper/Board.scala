@@ -29,10 +29,16 @@ class Board(dimensions: BoardDimensions, mineCount: Int, debug: Boolean = false)
   }
 
   def clickPixel(clientX: Double, clientY: Double): GameState = clickTile(toPosition(clientX, clientY))
+  def rightClickPixel(clientX: Double, clientY: Double): Unit = rightClickTile(toPosition(clientX, clientY))
+
   private def clickTile(pos: Position): GameState = {
     println("Clicking tile at "+pos)
     state = state.revealTile(pos)
     state.checkGameEnd()
+  }
+  private def rightClickTile(pos: Position) = {
+    println("Flagging tile at "+pos)
+    state = state.toggleFlag(pos)
   }
 
   private def toPosition(clientX: Double, clientY: Double) = Position( (clientX / tileWidth).toInt, (clientY / tileHeight).toInt )
@@ -58,6 +64,7 @@ class Board(dimensions: BoardDimensions, mineCount: Int, debug: Boolean = false)
         drawText("X") // 💣
       case Flagged =>
         drawRect(backgroundColor)
+        fillStyle = "#990000"
         drawText("F") // ⚑ ⚐
     }
   }

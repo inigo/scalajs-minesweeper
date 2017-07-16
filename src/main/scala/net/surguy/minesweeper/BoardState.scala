@@ -58,5 +58,8 @@ case class BoardState(dimensions: BoardDimensions, mines: List[Position], reveal
     this.copy(revealedTiles = tilesToReveal ::: revealedTiles )
   }
 
-  def flagTile(pos: Position): BoardState = this.copy(flaggedTiles = pos :: flaggedTiles )
+  def toggleFlag(pos: Position): BoardState = {
+    val newFlags = if (flaggedTiles.contains(pos)) flaggedTiles.filterNot(_==pos) else pos :: flaggedTiles
+    this.copy(flaggedTiles = newFlags )
+  }
 }
