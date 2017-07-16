@@ -17,12 +17,12 @@ object Game {
     val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
     board.render(ctx)
     canvas.oncontextmenu = { e =>
-      board.rightClickPixel(e.clientX, e.clientY)
+      board.rightClickPixel(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop)
       board.render(ctx)
       false
     }
     canvas.onclick = { e =>
-      val gameState = board.clickPixel(e.clientX, e.clientY)
+      val gameState = board.clickPixel(e.clientX - canvas.offsetLeft, e.clientY - canvas.offsetTop)
       board.render(ctx)
       gameState match {
         case Won => dom.window.alert("Congratulations!")
