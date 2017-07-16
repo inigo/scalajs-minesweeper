@@ -34,7 +34,7 @@ class Board(dimensions: BoardDimensions, mineCount: Int, debug: Boolean = false)
   private def clickTile(pos: Position): GameState = {
     println("Clicking tile at "+pos)
     state = state.revealTile(pos)
-    state.checkGameEnd()
+    state.gameState
   }
   private def rightClickTile(pos: Position) = {
     println("Flagging tile at "+pos)

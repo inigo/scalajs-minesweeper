@@ -7,7 +7,7 @@ import scala.collection.mutable.ListBuffer
   * Immutable representation of the current Minesweeper board - a new BoardState is created by revealing or flagging a tile.
   */
 case class BoardState(dimensions: BoardDimensions, mines: List[Position], revealedTiles: List[Position], flaggedTiles: List[Position]) {
-  private lazy val gameState = checkGameEnd()
+  val gameState: GameState = checkGameEnd()
 
   def at(pos: Position): TileState = {
     val gameEnded = gameState!=Playing
@@ -19,7 +19,7 @@ case class BoardState(dimensions: BoardDimensions, mines: List[Position], reveal
     }
   }
 
-  def checkGameEnd(): GameState = {
+  private def checkGameEnd(): GameState = {
     if (revealedTiles.intersect(mines).nonEmpty) Lost
       else if (revealedTiles.length + mines.length == dimensions.totalSpaces) Won
       else Playing

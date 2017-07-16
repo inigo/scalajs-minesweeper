@@ -11,16 +11,16 @@ object BoardStateTest extends TestSuite {
     val boardState = BoardState(BoardDimensions(1, 1), mines = List(Position(0,1), Position(1,0)), revealedTiles = List(), flaggedTiles = List())
     "Checking for game end"- {
       "Initial game state is playing" - {
-        assert(boardState.checkGameEnd() == Playing)
+        assert(boardState.gameState == Playing)
       }
       "Revealing a single non-mine continues playing" - {
-        assert(boardState.revealTile(Position(0, 0)).checkGameEnd() == Playing)
+        assert(boardState.revealTile(Position(0, 0)).gameState == Playing)
       }
       "Revealing a mine loses the game" - {
-        assert(boardState.revealTile(Position(0, 1)).checkGameEnd() == Lost)
+        assert(boardState.revealTile(Position(0, 1)).gameState == Lost)
       }
       "Revealing all non-mines wins the game" - {
-        assert(boardState.revealTile(Position(0, 0)).revealTile(Position(1, 1)).checkGameEnd() == Won)
+        assert(boardState.revealTile(Position(0, 0)).revealTile(Position(1, 1)).gameState == Won)
       }
     }
 
