@@ -2,9 +2,9 @@ package net.surguy.minesweeper
 
 import org.scalajs.dom
 import org.scalajs.dom.html.Canvas
-import org.scalajs.dom.raw.{HTMLButtonElement, HTMLCanvasElement, HTMLSelectElement}
 
 import scala.scalajs.js.annotation.{JSExport, JSExportTopLevel}
+import scalatags.JsDom.all._
 
 /**
   * Minesweeper entry point
@@ -22,35 +22,27 @@ object Game {
 
   private def gameSelector() = {
     val ms = dom.document.getElementById("minesweeper")
-    val controls = dom.document.createElement("div")
-    val msBoard = dom.document.createElement("div")
+    val msBoard = div().render
 
-    val selectNode = dom.document.createElement("select").asInstanceOf[HTMLSelectElement]
-    List(SmallGame, IntermediateGame, LargeGame).foreach{ gs =>
-      val optionNode = dom.document.createElement("option")
-      optionNode.appendChild( dom.document.createTextNode(gs.name))
-      optionNode.setAttribute("value", gs.name)
-      selectNode.appendChild(optionNode)
-    }
-    controls.appendChild(selectNode)
+    val selectNode = select(gameSizes.map(gs => option(value:=gs.name, gs.name)) ).render
 
-    val button = dom.document.createElement("button").asInstanceOf[HTMLButtonElement]
-    button.appendChild(dom.document.createTextNode("Start"))
-    button.onclick = { e =>
+    def createCanvas() = {
       println("Starting game")
 
       while (msBoard.hasChildNodes()) { msBoard.removeChild(msBoard.childNodes(0))  }
 
-      val gameSizeText = selectNode.childNodes.item(selectNode.selectedIndex).attributes.getNamedItem("value").value
+      val gameSizeText = selectNode.childNodes.item(selectNode.selectedIndex).textContent
       val gameSize = gameSizes.find(_.name==gameSizeText).head
-      val canvas = dom.document.createElement("canvas").asInstanceOf[HTMLCanvasElement]
-      canvas.setAttribute("style", "display: block")
-      canvas.setAttribute("width", ""+gameSize.dimensions.x * tileWidth)
-      canvas.setAttribute("height", ""+gameSize.dimensions.y * tileHeight)
-      msBoard.appendChild(canvas)
-      startGame(canvas, gameSize)
+      val canvasNode = canvas ( style := "display: block").render
+      canvasNode.setAttribute("width", ""+gameSize.dimensions.x * tileWidth)  // Doesn't work when setting width/height directly via the tag?
+      canvasNode.setAttribute("height", ""+gameSize.dimensions.y * tileHeight)
+
+      msBoard.appendChild(canvasNode)
+      startGame(canvasNode, gameSize)
     }
-    controls.appendChild(button)
+
+    val controls = div( selectNode, button(onclick := { () => createCanvas() }, "Start")).render
+
     ms.appendChild(controls)
     ms.appendChild(msBoard)
   }
