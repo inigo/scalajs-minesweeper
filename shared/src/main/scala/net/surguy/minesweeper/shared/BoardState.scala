@@ -1,4 +1,4 @@
-package net.surguy.minesweeper
+package net.surguy.minesweeper.shared
 
 import scala.collection.mutable
 import scala.collection.mutable.ListBuffer

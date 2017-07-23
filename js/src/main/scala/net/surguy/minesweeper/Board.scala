@@ -1,5 +1,6 @@
 package net.surguy.minesweeper
 
+import net.surguy.minesweeper.shared._
 import org.scalajs.dom.CanvasRenderingContext2D
 
 /**

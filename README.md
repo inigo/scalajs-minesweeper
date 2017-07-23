@@ -5,7 +5,7 @@ scalajs-minesweeper is an implementation of Minesweeper in Scala JS.
     bin/sbt
     > ~fastOptJS`
 
-Navigate to: http://localhost:12345/target/scala-2.12/classes/index-dev.html
+Navigate to: http://localhost:12345/js/target/scala-2.12/classes/index-dev.html
 
 The page will refresh on every change to the code.
 
