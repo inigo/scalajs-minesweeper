@@ -26,6 +26,8 @@ class Board(dimensions: BoardDimensions, mineCount: Int, tileWidth: Int, tileHei
     }
   }
 
+  private[minesweeper] def getState = state
+
   def clickPixel(clientX: Double, clientY: Double): GameState = clickTile(toPosition(clientX, clientY))
   def rightClickPixel(clientX: Double, clientY: Double): Unit = rightClickTile(toPosition(clientX, clientY))
 

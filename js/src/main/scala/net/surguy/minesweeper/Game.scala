@@ -19,8 +19,8 @@ object Game {
   }
 
   private val gameSizes = List(SmallGame, IntermediateGame, LargeGame)
-  private val tileWidth = 30
-  private val tileHeight = 30
+  val tileWidth = 30
+  val tileHeight = 30
 
   private def gameSelector() = {
     val ms = dom.document.getElementById("minesweeper")
@@ -35,9 +35,7 @@ object Game {
 
       val gameSizeText = selectNode.childNodes.item(selectNode.selectedIndex).textContent
       val gameSize = gameSizes.find(_.name==gameSizeText).head
-      val canvasNode = canvas ( style := "display: block").render
-      canvasNode.setAttribute("width", ""+gameSize.dimensions.x * tileWidth)  // Doesn't work when setting width/height directly via the tag?
-      canvasNode.setAttribute("height", ""+gameSize.dimensions.y * tileHeight)
+      val canvasNode: Canvas = createCanvasNode(gameSize)
 
       msBoard.appendChild(canvasNode)
       startGame(canvasNode, gameSize)
@@ -49,7 +47,14 @@ object Game {
     ms.appendChild(msBoard)
   }
 
-  private def startGame(canvas: Canvas, gameSize: GameSize) = {
+  private[minesweeper] def createCanvasNode(gameSize: GameSize) = {
+    val canvasNode = canvas(style := "display: block").render
+    canvasNode.setAttribute("width", "" + gameSize.dimensions.x * tileWidth) // Doesn't work when setting width/height directly via the tag?
+    canvasNode.setAttribute("height", "" + gameSize.dimensions.y * tileHeight)
+    canvasNode
+  }
+
+  private[minesweeper] def startGame(canvas: Canvas, gameSize: GameSize) = {
     val ctx = canvas.getContext("2d").asInstanceOf[dom.CanvasRenderingContext2D]
     val board = new Board(gameSize.dimensions, gameSize.mineCount, tileWidth, tileHeight)
 
@@ -68,5 +73,6 @@ object Game {
         case _ => // Continue
       }
     }
+    board
   }
 }

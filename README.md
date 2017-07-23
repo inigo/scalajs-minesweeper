@@ -38,6 +38,18 @@ The S3 bucket is set up with a public read policy:
       ]
     }
 
+## Frontend tests
+
+  > brew install nodejs
+  
+  > brew install cairo
+  
+  > npm install jsdom
+  
+  > npm install cairo
+  
+  > npm install canvas
+
 ## License
 
 Copyright (C) 2017 Inigo Surguy.
