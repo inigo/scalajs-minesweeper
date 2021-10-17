@@ -1,7 +1,6 @@
-//addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0-RC6")
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.7.1")
 
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.17")
+addSbtPlugin("cf.janga" % "sbts3" % "0.10.5")
 
-addSbtPlugin("com.lihaoyi" % "workbench" % "0.3.0")
-
-addSbtPlugin("com.typesafe.sbt" % "sbt-s3" % "0.9")
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.7.1")
+addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "1.0.0")

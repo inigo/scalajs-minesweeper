@@ -5,6 +5,7 @@ target/
 *.tmp
 *.~*
 
+.bsp
 .idea
 .cache
 .classpath
